@@ -2,21 +2,7 @@
 
 <?php
 
-// Insert absolute filepath to your twitteroauth.php script here - grab the twitteroauth folder from http://github.com/abraham/twitteroauth
-$twitter_oauth_path = '/{YOURFILEPATH}/twitteroauth/twitteroauth.php';
-
-// Insert absolute filepath where your cached feed file will go - can be the same directory as this script
-$cached_file_path = '/{YOURFILEPATH}/Stellar-Tweetbot/feed.xml';
-
-// Insert HTTP path to your Stellar.io XML/RSS file
-$feed_url = "http://stellar.io/{YOURUSERNAME}/flow/feed";
-
-// Insert your Twitter app credentials... you can create and get these at https://dev.twitter.com/apps
-$consumer_key = '{GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS}';
-$consumer_secret = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
-$access_token = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
-$access_token_secret = 'GET_THIS_FROM_YOUR_TWITTER_ACCOUNT_SETTINGS';
-
+require_once 'config.php';
 require_once $twitter_oauth_path;
 
 // This function grabs the last tweets we cached so we don't try to tweet them again... saves API hits
@@ -44,9 +30,7 @@ function getOldIDs () {
 // This function looks for new tweets and retweets them out
 function retweet() {
  
-
-	global $consumer_key, $consumer_secret, $access_token, $access_token_secret, $feed_url, $cached_file_path;
-	
+	$feed_url = 'http://stellar.io/' . $username . '/flow/feed';
 	$toa = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 	
 	$ch = curl_init($feed_url);
