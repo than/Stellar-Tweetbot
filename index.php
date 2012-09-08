@@ -32,7 +32,6 @@ function getOldIDs () {
 function retweet() {
  
 	$feed_url = 'http://stellar.io/' . STELLAR_USERNAME . '/flow/feed';
-echo $feed_url;
 	$toa = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
 	
 	$ch = curl_init($feed_url);
