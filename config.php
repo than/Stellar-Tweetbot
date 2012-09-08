@@ -1,18 +1,18 @@
 <?php
 
 // Insert absolute filepath to your twitteroauth.php script here - grab the twitteroauth folder from http://github.com/abraham/twitteroauth
-$twitter_oauth_path = '/{YOURFILEPATH}/twitteroauth/twitteroauth.php';
+require_once 'twitteroauth/twitteroauth/twitteroauth.php';
 
 // Insert absolute filepath where your cached feed file will go - can be the same directory as this script
-$cached_file_path = '/{YOURFILEPATH}/Stellar-Tweetbot/feed.xml';
+define('CACHED_FILE_PATH', 'feed.xml');
 
 // Insert your Stellar.io username
-$username = '';
+define('STELLAR_USERNAME', '');
 
 // Insert your Twitter app credentials... you can create and get these at https://dev.twitter.com/apps
-$consumer_key = '';
-$consumer_secret = '';
-$access_token = '';
-$access_token_secret = '';
+define('CONSUMER_KEY','');
+define('CONSUMER_SECRET', '');
+define('ACCESS_TOKEN', '');
+define('ACCESS_TOKEN_SECRET', '');
 
 ?>

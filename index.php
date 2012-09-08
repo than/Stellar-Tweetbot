@@ -3,24 +3,25 @@
 <?php
 
 require_once 'config.php';
-require_once $twitter_oauth_path;
 
 // This function grabs the last tweets we cached so we don't try to tweet them again... saves API hits
 function getOldIDs () {
-	global $cached_file_path;
-	$handle = fopen($cached_file_path, 'r');
-	$contents = fread($handle, filesize($cached_file_path));
-	fclose($handle);
-
-	$oldxml = simplexml_load_string($contents);
 
 	$oldIDs = array();
 
-	foreach($oldxml->entry as $entry) {
-		if ($entry->link->attributes()->href) {
-			$urlstring = (string)$entry->link->attributes()->href;
-			if (preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
-				array_push($oldIDs, $matches[1]);
+	if (file_exists(CACHED_FILE_PATH)) {
+		$handle = fopen(CACHED_FILE_PATH, 'r');
+		$contents = fread($handle, filesize(CACHED_FILE_PATH));
+		fclose($handle);
+
+		$oldxml = simplexml_load_string($contents);
+
+		foreach($oldxml->entry as $entry) {
+			if ($entry->link->attributes()->href) {
+				$urlstring = (string)$entry->link->attributes()->href;
+				if (preg_match("/twitter.com\/[A-Z0-9_]+\/status\/([0-9]+)/i", $urlstring, $matches)) { 
+					array_push($oldIDs, $matches[1]);
+				}
 			}
 		}
 	}
@@ -30,8 +31,9 @@ function getOldIDs () {
 // This function looks for new tweets and retweets them out
 function retweet() {
  
-	$feed_url = 'http://stellar.io/' . $username . '/flow/feed';
-	$toa = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
+	$feed_url = 'http://stellar.io/' . STELLAR_USERNAME . '/flow/feed';
+echo $feed_url;
+	$toa = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
 	
 	$ch = curl_init($feed_url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -53,13 +55,12 @@ function retweet() {
 		}
 	}
 
-	$handle = fopen($cached_file_path, 'w');
+	$handle = fopen(CACHED_FILE_PATH, 'w');
 	fwrite($handle,$feedcontents);
 	fclose($handle);	
 
 }
 
 retweet();
-
 
 ?>
